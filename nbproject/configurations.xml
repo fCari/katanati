@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>alg_matutil.h</itemPath>
+      <itemPath>homoest.h</itemPath>
+      <itemPath>inter.h</itemPath>
+      <itemPath>matrix.h</itemPath>
+      <itemPath>matrix_base.h</itemPath>
+      <itemPath>svd.h</itemPath>
+      <itemPath>svd_def.h</itemPath>
+      <itemPath>tensor3333.h</itemPath>
+      <itemPath>util_gen.h</itemPath>
+      <itemPath>util_io.h</itemPath>
+      <itemPath>util_kk.h</itemPath>
+      <itemPath>util_num.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>alg_eigen.cpp</itemPath>
+      <itemPath>alg_lu.cpp</itemPath>
+      <itemPath>alg_matutil.cpp</itemPath>
+      <itemPath>homoest.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+      <itemPath>matrix_base.cpp</itemPath>
+      <itemPath>mhomoest.cpp</itemPath>
+      <itemPath>svd.cpp</itemPath>
+      <itemPath>tensor3333.cpp</itemPath>
+      <itemPath>util_gen.cpp</itemPath>
+      <itemPath>util_io.cpp</itemPath>
+      <itemPath>util_kk.cpp</itemPath>
+      <itemPath>util_num.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>/usr/local/include/opencv2</pElem>
+          </incDir>
+          <commandLine>-std=c++11</commandLine>
+        </ccTool>
+        <linkerTool>
+          <linkerDynSerch>
+            <pElem>/usr/local/include/opencv2</pElem>
+          </linkerDynSerch>
+          <linkerLibItems>
+            <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="alg_eigen.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="alg_lu.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="alg_matutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="alg_matutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="homoest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="homoest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inter.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matrix.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="matrix_base.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matrix_base.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mhomoest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="svd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="svd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="svd_def.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tensor3333.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tensor3333.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_gen.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_gen.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_io.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_io.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_kk.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_kk.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_num.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_num.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="alg_eigen.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="alg_lu.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="alg_matutil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="alg_matutil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="homoest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="homoest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inter.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matrix.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="matrix_base.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="matrix_base.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="mhomoest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="svd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="svd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="svd_def.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tensor3333.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tensor3333.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_gen.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_gen.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_io.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_io.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_kk.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_kk.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="util_num.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="util_num.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
