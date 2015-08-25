@@ -16,6 +16,7 @@
 #include "opencv2/nonfree/nonfree.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "svd.h"
+#include<list>
 #include "inter.h"
 
 using namespace std;
@@ -420,7 +421,7 @@ void maxminCoor(vector<Point2f> ptsMaxMin,vector<Point2f> &scene_corners){
   }
       
 }
- void calcularPers(Mat img_object,Mat img_scene,Mat img_matches,vector<Point2f> obj,vector<Point2f> scene,Mat H){
+ Mat calcularPers(Mat img_object,Mat img_scene,Mat img_matches,vector<Point2f> obj,vector<Point2f> scene,Mat H){
  
 
   //perspectiveTransform( obj_corners, scene_corners, H);
@@ -430,7 +431,7 @@ void maxminCoor(vector<Point2f> ptsMaxMin,vector<Point2f> &scene_corners){
    int height=img_scene.rows;
    int width=img_scene.cols;
   
-   imshow("scena",img_scene);
+  // imshow("scena",img_scene);
 
    cout<<" ----------------";
 
@@ -455,7 +456,6 @@ maxminCoor(ptsMaxMin,scene_corners);
 int resFil=int(scene_corners[2].y-scene_corners[0].y);
 int resCol=int(scene_corners[2].x-scene_corners[0].x);
  Mat res=Mat::zeros(abs(resFil),abs(resCol),double(0));
-   Mat cambio=Mat::zeros(abs(resFil),abs(resCol),double(0));
    for (int i=0; i<img_object.rows; i++){ //y - ver 
         for (int j=0; j<img_object.cols; j++){ //x - hor 
             // set X_a 
@@ -492,25 +492,75 @@ int resCol=int(scene_corners[2].x-scene_corners[0].x);
   circle(res,scene_corners[2],4,Scalar(255,255,255),CV_FILLED,8); 
   circle(res,scene_corners[3],4,Scalar(255,255,255),CV_FILLED,8); */
  // dibMar(img_matches,img_object,scene_corners);
-     imshow("imagen de cambio",res);
+    /* imshow("imagen de cambio",res);
     imshow( "coordenadas", img_scene );
-  waitKey(0);
+  waitKey(0);*/
+  return res;
  }
 
 int main (int argc, char *argv[]){
     cout<<"-----------";
     clock_t start = clock();
-    Mat img_object = imread("/home/fredy/imagenes/images7.jpg", CV_LOAD_IMAGE_GRAYSCALE );
-    Mat img_scene = imread( "/home/fredy/imagenes/images4.jpg", CV_LOAD_IMAGE_GRAYSCALE );
+    Mat img_object = imread("/home/fredy/imagenes/img3.png", CV_LOAD_IMAGE_GRAYSCALE );
+    Mat img_scene = imread( "/home/fredy/imagenes/img1.png", CV_LOAD_IMAGE_GRAYSCALE );
     vector<Point2f> obj;
     vector<Point2f> scene;
     Mat img_matches=detecDesc(img_object,img_scene,obj, scene);
      Mat H;
     start = clock();
-    H=homografia_0(img_object,img_matches,obj,scene);
+    H=homografia_LMEDS(img_object,img_matches,obj,scene);
     cout<<endl<<"El error es: "<<calcularError(H,obj,scene)<<endl;
     calcTime(" 0 ",start);
-    calcularPers(img_object,img_scene,img_matches,obj,scene,H);
+    Mat img=calcularPers(img_object,img_scene,img_matches,obj,scene,H);
+   
+    namedWindow( "imagenes0",CV_WINDOW_KEEPRATIO);
+    imshow("imagenes0",img);
+    Mat res=Mat::zeros(img.rows,img.cols, CV_8UC1);
+    for(int i=0;i<img.rows;i++){
+        for(int j=0;j<img.cols;j++){
+            if(img.at<uchar>(i,j)<15){
+                img.at<uchar>(i,j)=0;
+            }else{
+                img.at<uchar>(i,j)=255;
+            }
+        }
+    }
+     namedWindow( "imagenes1",CV_WINDOW_KEEPRATIO);
+    imshow("imagenes1",img);
+     int umbral=255;
+    int px2=5555;
+    list<Point> ls ;
+   
+    int v=0;
+    for(int y=2;y<img.rows-2;y++){
+        for(int x=2;x<img.cols-2;x++){
+            int px1=2*img.at<uchar>(y,x)-img.at<uchar>(y,x+1)-img.at<uchar>(y+1,x);
+            if(px1>umbral){
+                px1=umbral;                
+            }
+            if(px1==0){
+                px2=2*img.at<uchar>(y,x)-img.at<uchar>(y,x-1)-img.at<uchar>(y-1,x);
+                if(px2>umbral){
+                       px2=umbral;
+                }                
+            }            
+            if((px1==0&&px2==510)||(px1==510&&px2==0))
+                res.at<uchar>(y,x)=umbral;
+            else if((px1==0&&px2==255)||(px1==255&&px2==0))
+                res.at<uchar>(y,x)=umbral;
+            else
+                res.at<uchar>(y,x)=px1;//mejor con px1 en vez de 0
+            //----------------------GUARDAR EN VECTOR-----------------------------------
+           
+        }
+    }
+    namedWindow( "imagenes2",CV_WINDOW_KEEPRATIO);
+    imshow("imagenes2",res);
+    waitKey(0);
+    
+    return 0;
+}
+void homog(){
     /*start = clock();
     H=homografia_RANSAC(img_object,img_matches,obj,scene);
     cout<<endl<<"El error es: "<<calcularError(H,obj,scene)<<endl;
@@ -551,6 +601,4 @@ int main (int argc, char *argv[]){
     //persTrasn(img_object,img_matches,H);
    read.close();*/
     //getchar();
-    return 0;
 }
- 
