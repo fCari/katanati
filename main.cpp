@@ -421,7 +421,7 @@ void maxminCoor(vector<Point2f> ptsMaxMin,vector<Point2f> &scene_corners){
   }
       
 }
- Mat calcularPers(Mat img_object,Mat img_scene,Mat img_matches,vector<Point2f> obj,vector<Point2f> scene,Mat H){
+ Mat calcularPers(Mat img_object,Mat img_scene,Mat img_matches,vector<Point2f> obj,vector<Point2f> scene,Mat H,Mat &cc){
  
 
   //perspectiveTransform( obj_corners, scene_corners, H);
@@ -456,6 +456,7 @@ maxminCoor(ptsMaxMin,scene_corners);
 int resFil=int(scene_corners[2].y-scene_corners[0].y);
 int resCol=int(scene_corners[2].x-scene_corners[0].x);
  Mat res=Mat::zeros(abs(resFil),abs(resCol),double(0));
+ 
    for (int i=0; i<img_object.rows; i++){ //y - ver 
         for (int j=0; j<img_object.cols; j++){ //x - hor 
             // set X_a 
@@ -465,16 +466,17 @@ int resCol=int(scene_corners[2].x-scene_corners[0].x);
             // compute X 
             ptx=H*ptxp; 
             //#define CLIP2(minv, maxv, value) (min(maxv, max(minv, value))) 
-            int curpi = CLIP2(0, height-1, (int)(ptx.at<double>(1,0)/ptx.at<double>(2,0))); 
+            int curpi = CLIP2(0, height-1, (int)(ptx.at<double>(1,0)/ptx.at<double>(2,0)));//cortar=CLIP 
             int curpj = CLIP2(0, width-1, (int)(ptx.at<double>(0,0)/ptx.at<double>(2,0))); 
 
             //cvSet2D(img_object,curpi,curpj,cvGet2D(img_scene,i,j)); 
             //cout<<" "<<H.at<double>(0,2)/H.at<double>(2,2)<<" , "<<H.at<double>(1,2)/H.at<double>(2,2)<<endl;
             if(int((curpi)-scene_corners[0].y<resFil)&&int((curpj)-scene_corners[0].x)<resCol){
-                 
+                 // la resta entre curpi y scene_corners resulta la ubicacion en en el res
                // res.at<uchar>((int)(curpi)-abs(scene_corners[0].y),(int)(curpj)-abs(scene_corners[0].x))=img_object.at<uchar>(i,j);
                 res.at<uchar>((int)(curpi)-abs(scene_corners[0].y),(int)(curpj)-abs(scene_corners[0].x))=abs(img_object.at<uchar>(i,j)-img_scene.at<uchar>(curpi,curpj));
-            }
+                cc.at<uchar>((int)(curpi),(int)(curpj))=1;
+            }else{cc.at<uchar>((int)(curpi),(int)(curpj))=0;}
         } 
     }
 
@@ -501,7 +503,7 @@ int resCol=int(scene_corners[2].x-scene_corners[0].x);
 int main (int argc, char *argv[]){
     cout<<"-----------";
     clock_t start = clock();
-    Mat img_object = imread("/home/fredy/imagenes/img3.png", CV_LOAD_IMAGE_GRAYSCALE );
+    Mat img_object = imread("/home/fredy/imagenes/img2.png", CV_LOAD_IMAGE_GRAYSCALE );
     Mat img_scene = imread( "/home/fredy/imagenes/img1.png", CV_LOAD_IMAGE_GRAYSCALE );
     vector<Point2f> obj;
     vector<Point2f> scene;
@@ -511,8 +513,39 @@ int main (int argc, char *argv[]){
     H=homografia_LMEDS(img_object,img_matches,obj,scene);
     cout<<endl<<"El error es: "<<calcularError(H,obj,scene)<<endl;
     calcTime(" 0 ",start);
-    Mat img=calcularPers(img_object,img_scene,img_matches,obj,scene,H);
-   
+    Mat check=Mat::zeros(img_scene.rows,img_scene.cols, CV_8UC1);
+    Mat img=calcularPers(img_object,img_scene,img_matches,obj,scene,H,check);
+   //****************************************************************************************   
+       /* Mat img_interp = img.clone(); 
+    Mat data_interp = img.clone();
+    Mat data_scene = img.clone();
+    int mse = 0; 
+    int pixnum = 0; 
+    for (int i=1; i<img.rows-1; i++){ //y - ver 
+        for (int j=1; j<img.cols-1; j++){ //x - hor 
+            int msetmp = 0; 
+            if(check.at<uchar>(i,j) == 0){ 
+                int count = (check.at<uchar>(i-1,j)==1)+(check.at<uchar>(i+1,j)==1)+(check.at<uchar>(i,j-1)==1)+(check.at<uchar>(i,j+1)==1); 
+                if(count != 0 ){ 
+                    //for (k=0; k<channels; k++){ 
+                        data_interp.at<uchar>(i,j) = (int)((data_scene.at<uchar>((i-1),j)+data_scene.at<uchar>((i+1),j)+data_scene.at<uchar>(i,(j-1))+data_scene.at<uchar>(i,(j+1)))/count); 
+                        msetmp += pow(img_object.at<uchar>(i,j)-data_interp.at<uchar>(i,j), 2.0);  
+                   // } 
+                    mse += msetmp; 
+                    pixnum++; 
+                } 
+            }else{ 
+            //for (k=0; k<channels; k++) 
+                msetmp += pow(img_object.at<uchar>(i,j)- data_interp.at<uchar>(i,j), 2.0); 
+                mse += msetmp;
+                pixnum++; 
+            } 
+        } 
+    } 
+   //****************************************************************************************   
+       namedWindow( "imagenes_datainterp",CV_WINDOW_KEEPRATIO);
+    imshow("imagenes_data interp",data_interp);*/
+    
     namedWindow( "imagenes0",CV_WINDOW_KEEPRATIO);
     imshow("imagenes0",img);
     Mat res=Mat::zeros(img.rows,img.cols, CV_8UC1);
@@ -527,6 +560,7 @@ int main (int argc, char *argv[]){
     }
      namedWindow( "imagenes1",CV_WINDOW_KEEPRATIO);
     imshow("imagenes1",img);
+    //Calculando bordes de la imagenes binarias
      int umbral=255;
     int px2=5555;
     list<Point> ls ;
