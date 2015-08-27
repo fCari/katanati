@@ -474,7 +474,8 @@ int resCol=int(scene_corners[2].x-scene_corners[0].x);
             if(int((curpi)-scene_corners[0].y<resFil)&&int((curpj)-scene_corners[0].x)<resCol){
                  // la resta entre curpi y scene_corners resulta la ubicacion en en el res
                // res.at<uchar>((int)(curpi)-abs(scene_corners[0].y),(int)(curpj)-abs(scene_corners[0].x))=img_object.at<uchar>(i,j);
-                res.at<uchar>((int)(curpi)-abs(scene_corners[0].y),(int)(curpj)-abs(scene_corners[0].x))=abs(img_object.at<uchar>(i,j)-img_scene.at<uchar>(curpi,curpj));
+                res.at<uchar>((int)(curpi)-abs(scene_corners[0].y),(int)(curpj)-abs(scene_corners[0].x))=
+                abs(img_object.at<uchar>(i,j)-img_scene.at<uchar>(curpi,curpj));
                 cc.at<uchar>((int)(curpi),(int)(curpj))=1;
             }else{cc.at<uchar>((int)(curpi),(int)(curpj))=0;}
         } 
